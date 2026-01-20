@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # NewsFlow - RSS News Aggregator
-# Run this script to start the application
+# Double-click this file to start the application
 
 set -e
 
@@ -29,6 +29,7 @@ echo ""
 # Check if Python is installed
 if ! command -v python3 &> /dev/null; then
     echo -e "${RED}Error: Python 3 is required but not installed.${NC}"
+    read -p "Press Enter to exit..."
     exit 1
 fi
 
@@ -56,10 +57,13 @@ if [ ! -f ".env" ]; then
     sed -i "s/your-secret-key-change-in-production/$SECRET_KEY/" .env
 fi
 
+# Open browser after a short delay
+(sleep 3 && xdg-open http://localhost:5000 2>/dev/null || open http://localhost:5000 2>/dev/null || true) &
+
 # Start the application
 echo ""
 echo -e "${GREEN}Starting NewsFlow...${NC}"
-echo -e "${BLUE}Open http://localhost:5000 in your browser${NC}"
+echo -e "${BLUE}Opening http://localhost:5000 in your browser${NC}"
 echo -e "${YELLOW}Press Ctrl+C to stop${NC}"
 echo ""
 
