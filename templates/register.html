@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Register - NewsFlow{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="logo">
+                <i class="fas fa-rss"></i>
+                <span>NewsFlow</span>
+            </div>
+            <h1>Create Account</h1>
+            <p>Join NewsFlow for personalized news updates</p>
+        </div>
+
+        <form id="register-form" class="auth-form">
+            <div class="form-group">
+                <label for="username">
+                    <i class="fas fa-user"></i>
+                    Username
+                </label>
+                <input type="text" id="username" name="username" required
+                       placeholder="Choose a username" autocomplete="username"
+                       minlength="3" maxlength="80">
+            </div>
+
+            <div class="form-group">
+                <label for="email">
+                    <i class="fas fa-envelope"></i>
+                    Email
+                </label>
+                <input type="email" id="email" name="email" required
+                       placeholder="Enter your email" autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label for="password">
+                    <i class="fas fa-lock"></i>
+                    Password
+                </label>
+                <input type="password" id="password" name="password" required
+                       placeholder="Create a password" autocomplete="new-password"
+                       minlength="6">
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">
+                    <i class="fas fa-lock"></i>
+                    Confirm Password
+                </label>
+                <input type="password" id="confirm-password" name="confirm_password" required
+                       placeholder="Confirm your password" autocomplete="new-password">
+            </div>
+
+            <div class="form-error" id="register-error"></div>
+
+            <button type="submit" class="btn btn-primary btn-full">
+                <span>Create Account</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+        </div>
+    </div>
+
+    <div class="auth-features">
+        <div class="feature">
+            <i class="fas fa-thumbtack"></i>
+            <h3>Pin Stories</h3>
+            <p>Save important news for quick access</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-globe"></i>
+            <h3>Global Coverage</h3>
+            <p>US, Ukraine, Middle East, World News & more</p>
+        </div>
+        <div class="feature">
+            <i class="fas fa-bell"></i>
+            <h3>Smart Notifications</h3>
+            <p>Stay informed with breaking news alerts</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const errorDiv = document.getElementById('register-error');
+    errorDiv.textContent = '';
+
+    const username = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+
+    if (password !== confirmPassword) {
+        errorDiv.textContent = 'Passwords do not match';
+        return;
+    }
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            window.location.href = '/';
+        } else {
+            errorDiv.textContent = data.error || 'Registration failed';
+        }
+    } catch (error) {
+        errorDiv.textContent = 'An error occurred. Please try again.';
+    }
+});
+</script>
+{% endblock %}

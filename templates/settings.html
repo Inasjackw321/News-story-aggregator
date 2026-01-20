@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Settings - NewsFlow{% endblock %}
+
+{% block content %}
+<div class="settings-container">
+    <header class="settings-header">
+        <a href="{{ url_for('index') }}" class="back-btn">
+            <i class="fas fa-arrow-left"></i>
+            Back to News
+        </a>
+        <h1>Settings</h1>
+    </header>
+
+    <div class="settings-content">
+        <section class="settings-section">
+            <h2><i class="fas fa-user"></i> Account</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label>Username</label>
+                    <span class="setting-value">{{ user.username }}</span>
+                </div>
+                <div class="setting-item">
+                    <label>Email</label>
+                    <span class="setting-value">{{ user.email }}</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h2><i class="fas fa-bell"></i> Notifications</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label for="notifications-toggle">
+                        Enable Notifications
+                        <small>Get notified when new stories arrive</small>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox" id="notifications-toggle"
+                               {% if user.notification_enabled %}checked{% endif %}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h2><i class="fas fa-palette"></i> Appearance</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label for="dark-mode-toggle">
+                        Dark Mode
+                        <small>Use dark theme for the interface</small>
+                    </label>
+                    <label class="toggle">
+                        <input type="checkbox" id="dark-mode-toggle"
+                               {% if user.dark_mode %}checked{% endif %}>
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h2><i class="fab fa-telegram"></i> Telegram Integration</h2>
+            <div class="settings-group">
+                <div class="setting-item vertical">
+                    <label>API ID</label>
+                    <input type="text" id="telegram-api-id" placeholder="Enter your Telegram API ID"
+                           class="settings-input">
+                </div>
+                <div class="setting-item vertical">
+                    <label>API Hash</label>
+                    <input type="text" id="telegram-api-hash" placeholder="Enter your Telegram API Hash"
+                           class="settings-input">
+                </div>
+                <div class="setting-item">
+                    <button class="btn btn-primary" id="save-telegram-settings">
+                        <i class="fas fa-save"></i> Save Telegram Settings
+                    </button>
+                </div>
+                <p class="settings-help">
+                    Get your API credentials from <a href="https://my.telegram.org" target="_blank">my.telegram.org</a>
+                </p>
+            </div>
+        </section>
+
+        <section class="settings-section">
+            <h2><i class="fas fa-database"></i> Data</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label>
+                        Clear Pinned Stories
+                        <small>Remove all pinned news items</small>
+                    </label>
+                    <button class="btn btn-danger" id="clear-pins-btn">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="settings-section danger-zone">
+            <h2><i class="fas fa-exclamation-triangle"></i> Danger Zone</h2>
+            <div class="settings-group">
+                <div class="setting-item">
+                    <label>
+                        Delete Account
+                        <small>Permanently delete your account and all data</small>
+                    </label>
+                    <button class="btn btn-danger" id="delete-account-btn">
+                        <i class="fas fa-user-times"></i> Delete Account
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Notifications toggle
+    document.getElementById('notifications-toggle').addEventListener('change', async (e) => {
+        await updateSettings({ notification_enabled: e.target.checked });
+
+        if (e.target.checked) {
+            // Request browser notification permission
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+        }
+    });
+
+    // Dark mode toggle
+    document.getElementById('dark-mode-toggle').addEventListener('change', async (e) => {
+        await updateSettings({ dark_mode: e.target.checked });
+        document.documentElement.setAttribute('data-theme', e.target.checked ? 'dark' : 'light');
+    });
+
+    // Save Telegram settings
+    document.getElementById('save-telegram-settings').addEventListener('click', async () => {
+        const apiId = document.getElementById('telegram-api-id').value;
+        const apiHash = document.getElementById('telegram-api-hash').value;
+
+        try {
+            const response = await fetch('/api/user/telegram', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ api_id: apiId, api_hash: apiHash })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                showToast('Telegram settings saved');
+            } else {
+                showToast('Error saving settings', 'error');
+            }
+        } catch (error) {
+            showToast('Error saving settings', 'error');
+        }
+    });
+
+    // Clear pins
+    document.getElementById('clear-pins-btn').addEventListener('click', async () => {
+        if (confirm('Are you sure you want to clear all pinned stories?')) {
+            // Implementation would go here
+            showToast('Pinned stories cleared');
+        }
+    });
+
+    async function updateSettings(settings) {
+        try {
+            const response = await fetch('/api/user/settings', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(settings)
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                showToast('Settings updated');
+            }
+        } catch (error) {
+            showToast('Error updating settings', 'error');
+        }
+    }
+
+    function showToast(message, type = 'success') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('show'), 10);
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}
