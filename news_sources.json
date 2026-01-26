@@ -1,0 +1,148 @@
+{
+    "sources": [
+        {
+            "name": "Reuters - US",
+            "url": "https://www.reutersagency.com/feed/?best-topics=usa&post_type=best",
+            "topic": "us",
+            "logo_url": "https://www.reuters.com/pf/resources/images/reuters/logo-vertical-default.png?d=136"
+        },
+        {
+            "name": "NPR News",
+            "url": "https://feeds.npr.org/1001/rss.xml",
+            "topic": "us",
+            "logo_url": "https://media.npr.org/assets/img/2019/06/17/nprlogo_rgb_whiteborder_custom-7c06f2837fb5d2e65e44de702968d1fdce0ce748.png"
+        },
+        {
+            "name": "AP News - US",
+            "url": "https://rsshub.app/apnews/topics/us-news",
+            "topic": "us",
+            "logo_url": "https://assets.apnews.com/fa/ba/9258a7114f5ba5c7202aaa1bdd66/aplogo.svg"
+        },
+        {
+            "name": "CNN US",
+            "url": "http://rss.cnn.com/rss/cnn_us.rss",
+            "topic": "us",
+            "logo_url": "https://cdn.cnn.com/cnn/.e/img/3.0/global/misc/cnn-logo.png"
+        },
+        {
+            "name": "BBC - US & Canada",
+            "url": "http://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml",
+            "topic": "us",
+            "logo_url": "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"
+        },
+        {
+            "name": "Reuters - Ukraine",
+            "url": "https://www.reutersagency.com/feed/?best-topics=tech&post_type=best",
+            "topic": "ukraine",
+            "logo_url": "https://www.reuters.com/pf/resources/images/reuters/logo-vertical-default.png?d=136"
+        },
+        {
+            "name": "BBC - Ukraine",
+            "url": "http://feeds.bbci.co.uk/news/world/europe/rss.xml",
+            "topic": "ukraine",
+            "logo_url": "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"
+        },
+        {
+            "name": "Kyiv Independent",
+            "url": "https://kyivindependent.com/feed/",
+            "topic": "ukraine",
+            "logo_url": "https://kyivindependent.com/wp-content/uploads/2021/11/cropped-favicon-270x270.jpg"
+        },
+        {
+            "name": "Al Jazeera - Middle East",
+            "url": "https://www.aljazeera.com/xml/rss/all.xml",
+            "topic": "middle_east",
+            "logo_url": "https://www.aljazeera.com/images/logo_aje.png"
+        },
+        {
+            "name": "Reuters - Middle East",
+            "url": "https://www.reutersagency.com/feed/?taxonomy=best-regions&post_tag=middle-east&post_type=best",
+            "topic": "middle_east",
+            "logo_url": "https://www.reuters.com/pf/resources/images/reuters/logo-vertical-default.png?d=136"
+        },
+        {
+            "name": "BBC - Middle East",
+            "url": "http://feeds.bbci.co.uk/news/world/middle_east/rss.xml",
+            "topic": "middle_east",
+            "logo_url": "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"
+        },
+        {
+            "name": "Times of Israel",
+            "url": "https://www.timesofisrael.com/feed/",
+            "topic": "middle_east",
+            "logo_url": "https://static.timesofisrael.com/www/uploads/2012/03/cropped-toi-header-logo.png"
+        },
+        {
+            "name": "Reuters - Politics",
+            "url": "https://www.reutersagency.com/feed/?best-topics=political-general&post_type=best",
+            "topic": "politics",
+            "logo_url": "https://www.reuters.com/pf/resources/images/reuters/logo-vertical-default.png?d=136"
+        },
+        {
+            "name": "BBC - Politics",
+            "url": "http://feeds.bbci.co.uk/news/politics/rss.xml",
+            "topic": "politics",
+            "logo_url": "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"
+        },
+        {
+            "name": "Politico",
+            "url": "https://www.politico.com/rss/politicopicks.xml",
+            "topic": "politics",
+            "logo_url": "https://www.politico.com/dims4/default/bbb6e89/2147483647/resize/1160x%3E/quality/90/?url=https%3A%2F%2Fstatic.politico.com%2F14%2F23%2F4d25f5094796ac3da7b51e2a0b35%2Fpolitico-logo.png"
+        },
+        {
+            "name": "The Guardian - Politics",
+            "url": "https://www.theguardian.com/politics/rss",
+            "topic": "politics",
+            "logo_url": "https://assets.guim.co.uk/images/guardian-logo-rss.c45beb1bafa34b347ac333af2e6fe23f.png"
+        },
+        {
+            "name": "BBC - World",
+            "url": "http://feeds.bbci.co.uk/news/world/rss.xml",
+            "topic": "world",
+            "logo_url": "https://news.bbcimg.co.uk/nol/shared/img/bbc_news_120x60.gif"
+        },
+        {
+            "name": "Reuters - World",
+            "url": "https://www.reutersagency.com/feed/?best-topics=world&post_type=best",
+            "topic": "world",
+            "logo_url": "https://www.reuters.com/pf/resources/images/reuters/logo-vertical-default.png?d=136"
+        },
+        {
+            "name": "AP News - World",
+            "url": "https://rsshub.app/apnews/topics/world-news",
+            "topic": "world",
+            "logo_url": "https://assets.apnews.com/fa/ba/9258a7114f5ba5c7202aaa1bdd66/aplogo.svg"
+        },
+        {
+            "name": "The Guardian - World",
+            "url": "https://www.theguardian.com/world/rss",
+            "topic": "world",
+            "logo_url": "https://assets.guim.co.uk/images/guardian-logo-rss.c45beb1bafa34b347ac333af2e6fe23f.png"
+        },
+        {
+            "name": "CNN World",
+            "url": "http://rss.cnn.com/rss/cnn_world.rss",
+            "topic": "world",
+            "logo_url": "https://cdn.cnn.com/cnn/.e/img/3.0/global/misc/cnn-logo.png"
+        },
+        {
+            "name": "Weather.gov Alerts",
+            "url": "https://alerts.weather.gov/cap/us.php?x=0",
+            "topic": "weather",
+            "logo_url": "https://www.weather.gov/images/nws/nws_logo.png"
+        },
+        {
+            "name": "Weather Underground",
+            "url": "https://www.wunderground.com/rss/news.xml",
+            "topic": "weather",
+            "logo_url": "https://www.wunderground.com/static/i/logo.png"
+        },
+        {
+            "name": "AccuWeather",
+            "url": "https://rss.accuweather.com/rss/liveweather_rss.asp?locCode=NAM|US|NY|NEW%20YORK",
+            "topic": "weather",
+            "logo_url": "https://www.accuweather.com/images/logos/aw-logo.svg"
+        }
+    ]
+}

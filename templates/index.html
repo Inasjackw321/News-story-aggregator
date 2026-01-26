@@ -1,0 +1,244 @@
+{% extends "base.html" %}
+
+{% block title %}NewsFlow - Your Personalized News{% endblock %}
+
+{% block content %}
+<div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-rss"></i>
+                <span>NewsFlow</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3>Feed</h3>
+                <a href="#" class="nav-item active" data-topic="all">
+                    <i class="fas fa-stream"></i>
+                    <span>All News</span>
+                </a>
+                <a href="#" class="nav-item" data-topic="pinned">
+                    <i class="fas fa-thumbtack"></i>
+                    <span>Pinned</span>
+                    <span class="badge" id="pinned-count">0</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Topics</h3>
+                <a href="#" class="nav-item" data-topic="us">
+                    <i class="fas fa-flag-usa"></i>
+                    <span>US News</span>
+                </a>
+                <a href="#" class="nav-item" data-topic="ukraine">
+                    <i class="fas fa-globe-europe"></i>
+                    <span>Ukraine</span>
+                </a>
+                <a href="#" class="nav-item" data-topic="middle_east">
+                    <i class="fas fa-mosque"></i>
+                    <span>Middle East</span>
+                </a>
+                <a href="#" class="nav-item" data-topic="politics">
+                    <i class="fas fa-landmark"></i>
+                    <span>Politics</span>
+                </a>
+                <a href="#" class="nav-item" data-topic="world">
+                    <i class="fas fa-globe"></i>
+                    <span>World News</span>
+                </a>
+                <a href="#" class="nav-item" data-topic="weather">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Weather</span>
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <h3>Sources</h3>
+                <div id="sources-list" class="sources-list">
+                    <!-- Dynamically populated -->
+                </div>
+                <a href="#" class="nav-item" id="manage-sources-btn">
+                    <i class="fas fa-plus"></i>
+                    <span>Manage Sources</span>
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="{{ url_for('settings') }}" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+            <a href="{{ url_for('logout') }}" class="nav-item">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 id="current-topic-title">All News</h1>
+            </div>
+
+            <div class="header-right">
+                <button class="btn btn-icon" id="refresh-btn" title="Refresh">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="notification-bell" id="notification-bell">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notification-badge" style="display: none;">0</span>
+                </div>
+                <div class="user-menu">
+                    <span class="username">{{ user.username }}</span>
+                    <img src="https://ui-avatars.com/api/?name={{ user.username }}&background=6366f1&color=fff"
+                         alt="Avatar" class="avatar">
+                </div>
+            </div>
+        </header>
+
+        <!-- New News Banner -->
+        <div class="new-news-banner" id="new-news-banner" style="display: none;">
+            <i class="fas fa-arrow-up"></i>
+            <span><span id="new-news-count">0</span> new stories</span>
+            <button id="load-new-news">Load</button>
+        </div>
+
+        <!-- News Feed -->
+        <div class="news-feed" id="news-feed">
+            <!-- Timeline -->
+            <div class="timeline" id="timeline">
+                <!-- Pinned Section -->
+                <div class="pinned-section" id="pinned-section" style="display: none;">
+                    <h2><i class="fas fa-thumbtack"></i> Pinned Stories</h2>
+                    <div class="pinned-items" id="pinned-items"></div>
+                </div>
+
+                <!-- News Items -->
+                <div class="timeline-items" id="timeline-items">
+                    <!-- Dynamically populated -->
+                </div>
+
+                <!-- Loading indicator -->
+                <div class="loading-indicator" id="loading-indicator">
+                    <div class="spinner"></div>
+                    <span>Loading news...</span>
+                </div>
+
+                <!-- Load more -->
+                <div class="load-more" id="load-more" style="display: none;">
+                    <button class="btn btn-secondary" id="load-more-btn">Load More</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Sources Modal -->
+    <div class="modal" id="sources-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Manage Sources</h2>
+                <button class="modal-close" id="close-sources-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="tabs">
+                    <button class="tab active" data-tab="rss">RSS Feeds</button>
+                    <button class="tab" data-tab="telegram">Telegram</button>
+                </div>
+
+                <div class="tab-content active" id="tab-rss">
+                    <div class="add-source-form">
+                        <h3>Add RSS Feed</h3>
+                        <input type="text" id="new-source-name" placeholder="Source name">
+                        <input type="url" id="new-source-url" placeholder="RSS feed URL">
+                        <select id="new-source-topic">
+                            <option value="us">US News</option>
+                            <option value="ukraine">Ukraine</option>
+                            <option value="middle_east">Middle East</option>
+                            <option value="politics">Politics</option>
+                            <option value="world" selected>World News</option>
+                            <option value="weather">Weather</option>
+                        </select>
+                        <button class="btn btn-primary" id="add-source-btn">
+                            <i class="fas fa-plus"></i> Add Source
+                        </button>
+                    </div>
+
+                    <div class="sources-grid" id="all-sources-list">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="tab-telegram">
+                    <div class="telegram-setup" id="telegram-setup">
+                        <h3>Telegram API Setup</h3>
+                        <p>To add Telegram channels, you need to provide your Telegram API credentials.</p>
+                        <ol>
+                            <li>Go to <a href="https://my.telegram.org" target="_blank">my.telegram.org</a></li>
+                            <li>Log in with your phone number</li>
+                            <li>Go to "API development tools"</li>
+                            <li>Create a new application</li>
+                            <li>Copy your API ID and API Hash below</li>
+                        </ol>
+                        <input type="text" id="telegram-api-id" placeholder="API ID">
+                        <input type="text" id="telegram-api-hash" placeholder="API Hash">
+                        <button class="btn btn-primary" id="save-telegram-api">
+                            <i class="fas fa-save"></i> Save Credentials
+                        </button>
+                    </div>
+
+                    <div class="add-channel-form" id="add-channel-form" style="display: none;">
+                        <h3>Add Telegram Channel</h3>
+                        <input type="text" id="new-channel-name" placeholder="Channel name (optional)">
+                        <input type="text" id="new-channel-username" placeholder="Channel username (e.g., @channel)">
+                        <select id="new-channel-topic">
+                            <option value="us">US News</option>
+                            <option value="ukraine">Ukraine</option>
+                            <option value="middle_east">Middle East</option>
+                            <option value="politics">Politics</option>
+                            <option value="world" selected>World News</option>
+                            <option value="weather">Weather</option>
+                        </select>
+                        <button class="btn btn-primary" id="add-channel-btn">
+                            <i class="fab fa-telegram"></i> Add Channel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- News Detail Modal -->
+    <div class="modal" id="news-modal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h2 id="news-modal-title">News Title</h2>
+                <button class="modal-close" id="close-news-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="news-modal-body">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Pass user data to JavaScript
+    window.USER_DATA = {{ user | tojson | safe }};
+</script>
+{% endblock %}
